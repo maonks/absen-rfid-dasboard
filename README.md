@@ -1,7 +1,7 @@
-⏱️ Absen Online backend REST API (GO Fiber)
+⏱️ Absen Online Dashboar & REST API (GO Fiber)
 ============================================
 
-Repository ini berisi backend REST API untuk sistem absensi RFID yang dibangun menggunakan bahasa Go dengan framework Fiber, ORM GORM, dan database PostgreSQL.
+Repository ini berisi Dasboard & Backend REST API untuk sistem absensi RFID yang dibangun menggunakan bahasa Go dengan framework Fiber, ORM GORM, HTMX dan database PostgreSQL.
 Aplikasi ini berfungsi sebagai pusat pengolahan data absensi yang dikirimkan oleh perangkat RFID berbasis XIAO ESP32-C3 setelah kartu RFID ditap oleh pengguna.
 
 @Copyright 2025 maonks
