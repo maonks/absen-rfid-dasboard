@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"log"
-
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
@@ -64,9 +62,6 @@ func PerhitunganPage(db *gorm.DB) fiber.Handler {
 			FROM daily
 			ORDER BY tanggal DESC
 		`).Scan(&rows)
-
-		// 🔎 DEBUG SEKALI SAJA
-		log.Println("PERHITUNGAN ROWS:", len(rows))
 
 		return c.Render("pages/perhitungan", fiber.Map{
 			"Title": "Perhitungan Kehadiran",

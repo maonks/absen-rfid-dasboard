@@ -18,14 +18,30 @@
 <div class="flex min-h-screen">
 
   <!-- SIDEBAR -->
-  <aside id="sidebar"
-    class="bg-slate-900 text-white w-16 hover:w-56 transition-all duration-300 group flex flex-col">
+  <aside
+        id="sidebar"
+        data-pinned="false"
+        class="bg-slate-900 text-white w-16
+                hover:w-56
+                data-[pinned=true]:w-56
+                transition-all duration-300
+                group flex flex-col relative"
+        >
 
     <!-- LOGO -->
     <div class="p-4 text-lg font-bold text-center border-b border-slate-700">
       <span class="group-hover:hidden">📡</span>
-      <span class="hidden group-hover:block">Absensi RFID</span>
+      <span class="hidden group-hover:block data-[pinned=true]:block transition-opacity">Absensi RFID</span>
     </div>
+
+        <!-- PIN BUTTON -->
+    <button
+      id="pinBtn"
+      class="text-xs px-2 py-1 rounded bg-slate-700 hover:bg-slate-600"
+      title="Pin Sidebar"
+    >
+      ⮞⮞
+    </button>
 
     <!-- MENU -->
     <nav class="flex-1 mt-4 space-y-1">
@@ -34,21 +50,23 @@
         hx-boost="false"
         class="flex items-center gap-3 px-4 py-3 hover:bg-slate-700">
         <span>🏠</span>
-        <span class="hidden group-hover:block">Dashboard</span>
+        <!-- <span class="hidden group-hover:block">Dashboard</span> -->
+         <span class="hidden group-hover:block ">Dashboard </span>
+
       </a>
 
       <a href="/siswa"
         hx-boost="false"
         class="flex items-center gap-3 px-4 py-3 hover:bg-slate-700">
         <span>👨‍🎓</span>
-        <span class="hidden group-hover:block">Data Siswa</span>
+        <span class="hidden group-hover:block ">Data Siswa</span>
       </a>
 
       <a href="/perhitungan"
         hx-boost="false"
         class="flex items-center gap-3 px-4 py-3 hover:bg-slate-700">
         <span>📊</span>
-        <span class="hidden group-hover:block">Perhitungan</span>
+        <span class="hidden group-hover:block ">Perhitungan</span>
       </a>
 
     </nav>
@@ -61,41 +79,62 @@
     </div>
   </aside>
 
-  <!-- MAIN CONTENT -->
+  <!-- Untuk main embed page nya -->
   <main class="flex-1 p-6">
     {{ embed }}
   </main>
-
 </div>
+
+<!-- untuk edit nama -->
+<div id="modal"></div>
+
 <script>
-const ws = new WebSocket("ws://192.168.1.100:8000/websocket");
+      function closeModal() {
+        const modal = document.getElementById("modal");
+        if (modal) modal.innerHTML = "";
+      }
+</script>
 
-ws.onopen = () => {
-  console.log("✅ WS CONNECTED");
-};
+<script>
+      // const ws = new WebSocket("ws://192.168.1.100:8000/websocket");
+         const ws = new WebSocket("ws://wan2.adamulti.com:8000/websocket");
 
-ws.onmessage = (e) => {
-  console.log("📡 WS MESSAGE:", e.data);
+      ws.onopen = () => {
+        console.log("✅ WS CONNECTED");
+      };
 
-  const table = document.getElementById("absen-table");
-  if (table) {
-    htmx.trigger(table, "reload");
-  }
+      ws.onmessage = (e) => {
+        const table = document.getElementById("absen-table");
+        if (table) {
+          htmx.trigger(table, "reload");
+        }  
+      };
 
-    
+      ws.onclose = () => {
+        console.log("🔴 WS CLOSED");
+      };
+</script>
 
-    
-    
+<script>
+      const sidebar = document.getElementById("sidebar");
+      const pinBtn = document.getElementById("pinBtn");
 
-};
+      // load state
+      const pinned = localStorage.getItem("sidebarPinned") === "true";
+      sidebar.dataset.pinned = pinned;
 
-ws.onerror = (e) => {
-  console.error("❌ WS ERROR", e);
-};
+      // toggle pin
+      pinBtn.addEventListener("click", () => {
+        const isPinned = sidebar.dataset.pinned === "true";      
 
-ws.onclose = () => {
-  console.log("🔴 WS CLOSED");
-};
+        sidebar.dataset.pinned = !isPinned;
+        localStorage.setItem("sidebarPinned", !isPinned);
+
+         pinBtn.textContent = sidebar.dataset.pinned === "true" ? "⮜⮜" : "⮞⮞";           
+
+      });
+      
+      
 </script>
 
 

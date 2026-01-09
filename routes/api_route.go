@@ -8,9 +8,7 @@ import (
 
 func AbsenRoute(app *fiber.App, db *gorm.DB) {
 
-	app.Post("/api/absen", controllers.CreateAbsen(db))
-	app.Get("/api/absen/table", controllers.SearchAbsen(db))
-	app.Post("/api/kartu/:uid", controllers.UpdateKartu(db))
-	app.Get("/api/kartu/:uid/edit", controllers.EditModal(db))
+	app.Post("/api/absen", controllers.CreateAbsen(db))	
+	app.Post("/api/kartu/:uid", controllers.UpdateKartu(db))	
 
 }
