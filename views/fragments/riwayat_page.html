@@ -8,14 +8,14 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
     <!-- ================= SISWA HADIR ================= -->
-    <div class="bg-green-50 border border-green-200 rounded-lg shadow-sm p-3">
+    <div class="bg-slate-50 border border-slate-200 rounded-lg shadow-sm p-3">
 
-      <h2 class="text-sm font-semibold text-green-700 mb-2">
-        ✅ Siswa Hadir
+      <h2 class="text-sm font-semibold text-slate-700 mb-2">
+        Siswa Hadir
       </h2>
 
-      <table class="w-full text-xs border border-green-200 rounded-md overflow-hidden">
-        <thead class="bg-green-100 text-green-800">
+      <table class="w-full text-xs border border-slate-200 rounded-md overflow-hidden">
+        <thead class="bg-slate-100 text-slate-700">
           <tr>
             <th class="py-2 px-2 text-center w-10">No</th>
             <th class="py-2 px-2 text-center">ID</th>
@@ -28,13 +28,13 @@
 
         <tbody>
           {{ range $i, $r := .Hadir }}
-          <tr class="border-t hover:bg-green-100 transition">
-            <td class="py-1.5 px-2 text-center">{{ add $i 1 }}</td>
-            <td class="py-1.5 px-2 text-center font-mono">{{ $r.Uid }}</td>
-            <td class="py-1.5 px-2 text-left font-medium">{{ $r.Nama }}</td>
-            <td class="py-1.5 px-2 text-center">{{ $r.Masuk }}</td>
+          <tr class="border-t border-slate-200 hover:bg-slate-100 transition">
+            <td class="py-1.5 px-2 text-center text-slate-600">{{ add $i 1 }}</td>
+            <td class="py-1.5 px-2 text-center font-mono text-slate-600">{{ $r.Uid }}</td>
+            <td class="py-1.5 px-2 text-left font-medium text-slate-800">{{ $r.Nama }}</td>
+            <td class="py-1.5 px-2 text-center text-slate-700">{{ $r.Masuk }}</td>
 
-            <td class="py-1.5 px-2 text-center">
+            <td class="py-1.5 px-2 text-center text-slate-700">
               {{ if $r.Pulang }}
                 {{ $r.Pulang }}
               {{ else }}
@@ -43,20 +43,23 @@
             </td>
 
             <td class="py-1.5 px-2 text-center">
-              {{ if eq $r.Status "MASUK" }}
-                <span class="px-2 py-0.5 text-[10px] rounded-full bg-green-600 text-white">
-                  ✔ Masuk
+            {{ if eq $r.Status "MASUK" }}
+                <span class="px-2 py-0.5 text-[10px] rounded-full
+                            bg-green-600 text-white font-medium">
+                ✔ Masuk
                 </span>
-              {{ else }}
-                <span class="px-2 py-0.5 text-[10px] rounded-full bg-orange-500 text-white">
-                  ⏱ Pulang
+            {{ else }}
+                <span class="px-2 py-0.5 text-[10px] rounded-full
+                            bg-orange-500 text-white font-medium">
+                ⏱ Pulang
                 </span>
-              {{ end }}
+            {{ end }}
             </td>
+
           </tr>
           {{ else }}
           <tr>
-            <td colspan="6" class="py-4 text-center text-gray-500">
+            <td colspan="6" class="py-4 text-center text-slate-500">
               Tidak ada siswa hadir
             </td>
           </tr>
@@ -67,14 +70,14 @@
     </div>
 
     <!-- ================= SISWA TANPA KETERANGAN ================= -->
-    <div class="bg-red-50 border border-red-200 rounded-lg shadow-sm p-3">
+    <div class="bg-slate-50 border border-slate-200 rounded-lg shadow-sm p-3">
 
-      <h2 class="text-sm font-semibold text-red-700 mb-2">
-        ❌ Siswa Tanpa Keterangan
+      <h2 class="text-sm font-semibold text-slate-700 mb-2">
+        Siswa Tanpa Keterangan
       </h2>
 
-      <table class="w-full text-xs border border-red-200 rounded-md overflow-hidden">
-        <thead class="bg-red-100 text-red-800">
+      <table class="w-full text-xs border border-slate-200 rounded-md overflow-hidden">
+        <thead class="bg-slate-100 text-slate-700">
           <tr>
             <th class="py-2 px-2 text-center w-10">No</th>
             <th class="py-2 px-2 text-center">ID</th>
@@ -85,20 +88,21 @@
 
         <tbody>
           {{ range $i, $r := .TanpaKeterangan }}
-          <tr class="border-t hover:bg-red-100 transition">
-            <td class="py-1.5 px-2 text-center">{{ add $i 1 }}</td>
-            <td class="py-1.5 px-2 text-center font-mono">{{ $r.ID }}</td>
-            <td class="py-1.5 px-2 text-left font-medium">{{ $r.Nama }}</td>
+          <tr class="border-t border-slate-200 hover:bg-slate-100 transition">
+            <td class="py-1.5 px-2 text-center text-slate-600">{{ add $i 1 }}</td>
+            <td class="py-1.5 px-2 text-center font-mono text-slate-600">{{ $r.ID }}</td>
+            <td class="py-1.5 px-2 text-left font-medium text-slate-800">{{ $r.Nama }}</td>
             <td class="py-1.5 px-2 text-center">
-              <span class="px-2 py-0.5 text-[10px] rounded-full bg-red-600 text-white">
+              <span class="px-2 py-0.5 text-[10px] rounded-full
+                           bg-slate-400 text-white font-medium">
                 Tidak Absen
               </span>
             </td>
           </tr>
           {{ else }}
           <tr>
-            <td colspan="4" class="py-4 text-center text-gray-500">
-              Semua siswa hadir 🎉
+            <td colspan="4" class="py-4 text-center text-slate-500">
+              Semua siswa hadir
             </td>
           </tr>
           {{ end }}
