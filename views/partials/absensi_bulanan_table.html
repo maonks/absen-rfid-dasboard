@@ -1,0 +1,113 @@
+<style>
+/* ====== ANIMATION ====== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseRed {
+  0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,.6); }
+  50%     { box-shadow: 0 0 0 6px rgba(239,68,68,0); }
+}
+
+.cell {
+  animation: fadeUp .35s ease both;
+}
+
+.late {
+  animation: fadeUp .35s ease both, pulseRed 2s infinite;
+}
+
+/* sticky */
+.sticky-name {
+  position: sticky;
+  left: 0;
+  background: #f8fafc;
+  z-index: 10;
+}
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background: #f1f5f9;
+  z-index: 20;
+}
+</style>
+
+<div
+   id="absensi-bulanan"
+    hx-get="/absensi/bulanan/table"
+    hx-trigger="refresh"
+    hx-swap="outerHTML">
+
+      <div class="overflow-x-auto border rounded-lg shadow-sm">
+
+      <table class="min-w-[1600px] text-[11px] border-collapse">
+
+        <!-- HEADER -->
+        <thead class="sticky-header">
+          <tr>
+            <th class="px-2 py-2 border text-center w-10">No</th>
+            <th class="px-3 py-2 border text-left w-48 sticky-name">Nama</th>
+
+            {{ range .Days }}
+              <th class="px-2 py-2 border text-center">
+                {{ . }}
+              </th>
+            {{ end }}
+          </tr>
+        </thead>
+
+        <!-- BODY -->
+        <tbody>
+        {{ range $i, $row := .Rows }}
+          <tr class="hover:bg-slate-50 transition">
+
+            <!-- NO -->
+            <td class="px-2 py-1 text-center border">
+              {{ add $i 1 }}
+            </td>
+
+            <!-- NAMA -->
+            <td class="px-3 py-1 border sticky-name font-semibold">
+              {{ $row.Nama }}
+            </td>
+
+            <!-- DAY CELLS -->
+            {{ range $.Days }}
+              {{ $cell := index $row.Hari . }}
+
+              <td class="px-1 py-1 border text-center">
+
+                {{ if not $cell }}
+                  <div class="cell bg-slate-200 text-slate-500 rounded py-1">
+                    -
+                  </div>
+
+                {{ else if eq $cell.Status "LATE" }}
+                  <div
+                    class="cell late bg-red-500 text-white rounded py-1 cursor-pointer"
+                    title="Masuk {{ $cell.Masuk }} | Pulang {{ $cell.Pulang }}"
+                  >
+                    {{ $cell.Masuk }}
+                  </div>
+
+                {{ else if eq $cell.Status "OK" }}
+                  <div
+                    class="cell bg-green-500 text-white rounded py-1 cursor-pointer"
+                    title="Masuk {{ $cell.Masuk }} | Pulang {{ $cell.Pulang }}"
+                  >
+                    {{ $cell.Masuk }}
+                  </div>
+
+                {{ end }}
+
+              </td>
+            {{ end }}
+
+          </tr>
+        {{ end }}
+        </tbody>
+
+      </table>
+      </div>
+</div>

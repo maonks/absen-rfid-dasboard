@@ -113,6 +113,11 @@
         <span>Detail Absensi</span>
       </a>
 
+      <a href="/absensi/bulanan" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-700 transition">
+        <span class="text-lg">📊</span>
+        <span>Absensi bulanan</span>
+      </a>
+
       <a href="/siswa" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-700 transition">
         <span class="text-lg">👨‍🎓</span>
         <span>Data Siswa</span>
@@ -239,35 +244,61 @@
   const ws = new WebSocket("ws://192.168.1.100:8000/websocket");
 
   ws.onmessage = (e) => {
-    const absenTable = document.getElementById("absen-table");
-    if (absenTable) {
-      htmx.trigger(absenTable, "reload");
-    }
 
     let data;
     try {
-      data = JSON.parse(e.data); // { uid: "XXXX" }
+      data = JSON.parse(e.data);
     } catch {
-      return; // jika bukan JSON, abaikan
+      return; // abaikan non-json
     }
 
-    if (!data.uid) return;
+    // ===============================
+    // 1️⃣ EVENT ABSENSI (DEFAULT)
+    // ===============================
+    if (data.uid) {
 
-    // coba cari row siswa
-    const row = document.getElementById("row-" + data.uid);
+      /* ===============================
+         A. REALTIME TABLE (monitoring)
+      =============================== */
+      const absenTable = document.getElementById("absen-table");
+      if (absenTable) {
+        htmx.trigger(absenTable, "reload");
+      }
 
-    if (row) {
-      // siswa sudah ada → refresh BARIS SAJA
-      htmx.trigger(row, "refresh");
-    } else {
-      // siswa baru → reload wrapper (tambah baris)
-      const home = document.getElementById("home-realtime");
-      if (home) {
-        htmx.trigger(home, "reload");
+      /* ===============================
+         B. HOME DASHBOARD (hari ini)
+      =============================== */
+      const row = document.getElementById("row-" + data.uid);
+
+      if (row) {
+        // siswa sudah ada → refresh baris saja
+        htmx.trigger(row, "refresh");
+      } else {
+        // siswa baru → reload wrapper
+        const home = document.getElementById("home-realtime");
+        if (home) {
+          htmx.trigger(home, "reload");
+        }
+      }
+
+      /* ===============================
+         C. ABSENSI BULANAN (BARU)
+      =============================== */
+      const bulanan = document.getElementById("absensi-bulanan");
+      if (bulanan) {
+        htmx.trigger(bulanan, "refresh");
       }
     }
+
+    // ===============================
+    // 2️⃣ EVENT LAIN (DI MASA DEPAN)
+    // ===============================
+    // if (data.type === "device") {}
+    // if (data.type === "logout") {}
+
   };
 </script>
+
 
 <!-- ====SCRIPT untuk close modal otomatis ====== -->
 <script>
